@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import BookList from './component/BookList'
+import AddBook from './component/AddBook'
+import  ApolloClient from 'apollo-boost';
+import { ApolloProvider  } from 'react-apollo';
+
+//apollo client setup
+const client = new ApolloClient({
+  uri:'http://localhost:4000/graphql',
+  onError: ({ networkError, graphQLErrors }) => {
+    console.log('graphQLErrors', graphQLErrors)
+    console.log('networkError', networkError)
+  }
+})
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    //wrapping entire app in apollo provider
+    //to get data from given endpoint and inject it inside the react app 
+    <ApolloProvider client={client} >
+
+    <div id="main">
+      <h1>My Reading List</h1>
+      <BookList/>
+      <AddBook/>
     </div>
+    </ApolloProvider>
   );
 }
 
